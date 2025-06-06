@@ -34,7 +34,7 @@ func InitOtelTracer() (func(context.Context) error, error) {
 	if cfgErr != nil {
 		//log.L().Errorf("get trace exporter config: %#v", cfgErr)
 	}
-	if !leoEnv.IsDebugging() {
+	if !env.IsDebug() {
 		exporter, err = TraceExporterWithGrpc(context.Background(), cfg.Target)
 	} else {
 		exporter, err = TraceExporterWithStdout()
@@ -56,7 +56,8 @@ func InitProvider(exporter sdktrace.SpanExporter, sampleRate float64) (func(cont
 		resource.WithAttributes(
 			// the service name used to display traces in backends
 			semconv.ServiceName(traceService),
-			attribute.String("env", leoEnv.Mode()),
+			attribute.String("env", string(env.GetRuntimeEnv())),
+			attribute.String("region", string(env.GetRuntimeRegion())),
 		),
 	)
 	if err != nil {
@@ -68,7 +69,7 @@ func InitProvider(exporter sdktrace.SpanExporter, sampleRate float64) (func(cont
 		sdktrace.WithBatchTimeout(time.Second * 3),
 	}
 	sample := sdktrace.ParentBased(sdktrace.AlwaysSample())
-	if leoEnv.IsReleasing() && sampleRate > 0 {
+	if env.IsRelease() && sampleRate > 0 {
 		sample = sdktrace.ParentBased(sdktrace.TraceIDRatioBased(sampleRate))
 	}
 	// Register the trace exporter with a TracerProvider, using a batch
