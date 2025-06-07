@@ -702,6 +702,74 @@ func (x *OssConfig) GetAccessKeySecret() string {
 	return ""
 }
 
+type Logger struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Path          string                 `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+	Level         string                 `protobuf:"bytes,2,opt,name=level,proto3" json:"level,omitempty"`
+	Expire        string                 `protobuf:"bytes,3,opt,name=expire,proto3" json:"expire,omitempty"`
+	Filename      string                 `protobuf:"bytes,4,opt,name=filename,proto3" json:"filename,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Logger) Reset() {
+	*x = Logger{}
+	mi := &file_protos_protos_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Logger) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Logger) ProtoMessage() {}
+
+func (x *Logger) ProtoReflect() protoreflect.Message {
+	mi := &file_protos_protos_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Logger.ProtoReflect.Descriptor instead.
+func (*Logger) Descriptor() ([]byte, []int) {
+	return file_protos_protos_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *Logger) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+func (x *Logger) GetLevel() string {
+	if x != nil {
+		return x.Level
+	}
+	return ""
+}
+
+func (x *Logger) GetExpire() string {
+	if x != nil {
+		return x.Expire
+	}
+	return ""
+}
+
+func (x *Logger) GetFilename() string {
+	if x != nil {
+		return x.Filename
+	}
+	return ""
+}
+
 var File_protos_protos_proto protoreflect.FileDescriptor
 
 const file_protos_protos_proto_rawDesc = "" +
@@ -771,7 +839,12 @@ const file_protos_protos_proto_rawDesc = "" +
 	"\tOssConfig\x12\x1a\n" +
 	"\bendpoint\x18\x01 \x01(\tR\bendpoint\x12\"\n" +
 	"\raccess_key_id\x18\x02 \x01(\tR\vaccessKeyId\x12*\n" +
-	"\x11access_key_secret\x18\x03 \x01(\tR\x0faccessKeySecretB,Z*github.com/welltop-cn/common/protos;protosb\x06proto3"
+	"\x11access_key_secret\x18\x03 \x01(\tR\x0faccessKeySecret\"f\n" +
+	"\x06Logger\x12\x12\n" +
+	"\x04path\x18\x01 \x01(\tR\x04path\x12\x14\n" +
+	"\x05level\x18\x02 \x01(\tR\x05level\x12\x16\n" +
+	"\x06expire\x18\x03 \x01(\tR\x06expire\x12\x1a\n" +
+	"\bfilename\x18\x04 \x01(\tR\bfilenameB,Z*github.com/welltop-cn/common/protos;protosb\x06proto3"
 
 var (
 	file_protos_protos_proto_rawDescOnce sync.Once
@@ -785,7 +858,7 @@ func file_protos_protos_proto_rawDescGZIP() []byte {
 	return file_protos_protos_proto_rawDescData
 }
 
-var file_protos_protos_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_protos_protos_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_protos_protos_proto_goTypes = []any{
 	(*ErrorCode)(nil),      // 0: protos.ErrorCode
 	(*Mysql)(nil),          // 1: protos.Mysql
@@ -795,10 +868,11 @@ var file_protos_protos_proto_goTypes = []any{
 	(*Mongodb)(nil),        // 5: protos.Mongodb
 	(*TracerExporter)(nil), // 6: protos.TracerExporter
 	(*OssConfig)(nil),      // 7: protos.OssConfig
-	nil,                    // 8: protos.Kafka.ConfigMapEntry
+	(*Logger)(nil),         // 8: protos.Logger
+	nil,                    // 9: protos.Kafka.ConfigMapEntry
 }
 var file_protos_protos_proto_depIdxs = []int32{
-	8, // 0: protos.Kafka.config_map:type_name -> protos.Kafka.ConfigMapEntry
+	9, // 0: protos.Kafka.config_map:type_name -> protos.Kafka.ConfigMapEntry
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
@@ -817,7 +891,7 @@ func file_protos_protos_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_protos_protos_proto_rawDesc), len(file_protos_protos_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

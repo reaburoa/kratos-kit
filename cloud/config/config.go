@@ -9,20 +9,12 @@ import (
 	"github.com/welltop-cn/common/utils/env"
 )
 
-type Config struct {
-}
+var defaultConfig config.Config
 
-func loadLocalConfig() config.Config {
-	rootPath, err := env.GetProjectPath()
-	if err != nil {
-		panic("get root path " + err.Error())
-	}
-	configPath := path.Join(rootPath, fmt.Sprintf("configs/%s", env.GetRuntimeEnv()))
-
-	yamlResource := fmt.Sprintf("%s/config.yaml", configPath)
-
-	c := config.New(config.WithSource(file.NewSource(yamlResource)))
-	defer c.Close()
+func loadLocalConfig(confPath string) config.Config {
+	configPath := path.Join(confPath, fmt.Sprintf("configs/%s", env.GetRuntimeEnv()))
+	c := config.New(config.WithSource(file.NewSource(fmt.Sprintf("%s/config.yaml", configPath))))
+	defer c.Close() // 关闭watch,不进行自动更新
 
 	if err := c.Load(); err != nil {
 		panic(err)
@@ -31,10 +23,25 @@ func loadLocalConfig() config.Config {
 	return c
 }
 
+func setConfig(c config.Config) {
+	defaultConfig = c
+}
+
 func InitConfig() {
+	var (
+		confPath string
+		err      error
+	)
 	if env.IsDebug() {
-		conf := loadLocalConfig()
-		config.SetConfig(conf)
-		return
+		confPath, err = env.GetProjectPath()
+		if err != nil {
+			panic("get root path " + err.Error())
+		}
 	}
+	conf := loadLocalConfig(confPath)
+	setConfig(conf)
+}
+
+func Get(key string) config.Value {
+	return defaultConfig.Value(key)
 }

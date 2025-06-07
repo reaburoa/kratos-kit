@@ -1,10 +1,13 @@
 package igorm
 
 import (
+	"context"
 	"fmt"
 	"time"
 
+	"github.com/welltop-cn/common/cloud/config"
 	"github.com/welltop-cn/common/protos"
+	"github.com/welltop-cn/common/utils/log"
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -17,7 +20,7 @@ func GormClient(key string) (*gorm.DB, func(), error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	log.L().Infof("mysql %s config %s", key, cfg)
+	log.CtxInfof(context.Background(), "mysql %s config %s", key, cfg)
 
 	client, shutdown, err := ConnGorm(key, cfg)
 	if err != nil {
@@ -32,17 +35,17 @@ func ConnGorm(instance string, cfg *protos.Mysql) (*gorm.DB, func(), error) {
 		Logger: logger.Default.LogMode(logger.Silent),
 	})
 	if err != nil {
-		log.L().Error("初始化mysql连接失败", zap.Error(err), zap.Any("error msg", err.Error())) // 增加告警
+		log.CtxError(context.Background(), "初始化mysql连接失败", zap.Error(err), zap.Any("error msg", err.Error())) // 增加告警
 		panic("Init mysql [" + instance + "] Failed With " + err.Error())
 	}
 	db, err := conn.DB()
 	if err != nil {
-		log.L().Error("mysql连接DB失败", zap.Error(err), zap.Any("error msg", err.Error())) // 增加告警
+		log.CtxError(context.Background(), "mysql连接DB失败", zap.Error(err), zap.Any("error msg", err.Error())) // 增加告警
 		panic("Init mysql DB [" + instance + "] Failed With " + err.Error())
 	}
 	err = db.Ping()
 	if err != nil {
-		log.L().Error("mysql连通性检测失败", zap.Error(err), zap.Any("error msg", err.Error())) // 增加告警
+		log.CtxError(context.Background(), "mysql连通性检测失败", zap.Error(err), zap.Any("error msg", err.Error())) // 增加告警
 		panic("Ping mysql DB [" + instance + "] Failed With " + err.Error())
 	}
 	if cfg.MaxIdle > 0 {
@@ -64,7 +67,7 @@ func ConnGorm(instance string, cfg *protos.Mysql) (*gorm.DB, func(), error) {
 			panic("Register Plugin err: " + err.Error())
 		}
 	}
-	log.L().Infof("Ping mysql DB [%s] Success", instance)
+	log.CtxInfof(context.Background(), "Ping mysql DB [%s] Success", instance)
 	return conn, func() {}, nil
 }
 

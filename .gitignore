@@ -70,3 +70,5 @@ cover.out
 openapi.yaml
 test.json
 /configs
+*.log
+runtime

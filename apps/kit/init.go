@@ -1,13 +1,19 @@
 package kit
 
+import (
+	"github.com/welltop-cn/common/cloud/config"
+	"github.com/welltop-cn/common/utils/env"
+	"github.com/welltop-cn/common/utils/log"
+)
+
 func Init(serviceName string, ops ...KitOptions) error {
 	kitOps := &kitOptions{
 		serviceName: serviceName,
 	}
-	clog.InitLogger()
+	log.InitLogger()
 
 	env.SetServiceName(kitOps.serviceName)
-	metrics.InitMetrics(kitOps.serviceName)
+	//	metrics.InitMetrics(kitOps.serviceName)
 
 	config.InitConfig()
 

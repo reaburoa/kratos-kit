@@ -1,13 +1,14 @@
 package server
 
 import (
-	"log/slog"
+	"context"
 	"net/http"
 	"net/http/pprof"
 	"os"
 
 	"github.com/felixge/fgprof"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/welltop-cn/common/utils/log"
 )
 
 func RunMetrics() error {
@@ -23,7 +24,7 @@ func RunMetrics() error {
 			_, _ = w.Write([]byte("pong"))
 		}))
 		if err := http.ListenAndServe(metricsHTTPPort, metricsSrv); err != nil {
-			log.L().Fatalf("start monitor http server failed %+v", err)
+			log.CtxFatalf(context.Background(), "start monitor http server failed %+v", err)
 		}
 	}()
 
@@ -43,7 +44,7 @@ func RunPprof() error {
 		pprofSrv.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
 		pprofSrv.HandleFunc("/debug/pprof/trace", pprof.Trace)
 		if err := http.ListenAndServe(pprofHTTPPort, pprofSrv); err != nil {
-			slog.Fatal("start pprof http server failed %+v", err)
+			log.CtxFatalf(context.Background(), "start pprof http server failed %+v", err)
 		}
 	}()
 	fgprofHTTPPort := os.Getenv("FGPROF_HTTP_PORT")
@@ -54,7 +55,7 @@ func RunPprof() error {
 		fgprofSrv := http.NewServeMux()
 		fgprofSrv.Handle("/debug/fgprof", fgprof.Handler())
 		if err := http.ListenAndServe(fgprofHTTPPort, fgprofSrv); err != nil {
-			slog.Fatal("start fgprof http server failed %+v", err)
+			log.CtxFatalf(context.Background(), "start fgprof http server failed %+v", err)
 		}
 	}()
 

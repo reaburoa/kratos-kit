@@ -84,3 +84,10 @@ message OssConfig {
   string access_key_id = 2;
   string access_key_secret = 3;
 }
+
+message Logger {
+  string path = 1;
+  string level = 2;
+  string expire = 3;
+  string filename = 4;
+}

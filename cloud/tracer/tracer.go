@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/welltop-cn/common/cloud/config"
 	"github.com/welltop-cn/common/protos"
 	"github.com/welltop-cn/common/utils/env"
 	"go.opentelemetry.io/otel"
