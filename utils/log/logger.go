@@ -4,6 +4,14 @@ import (
 	"go.uber.org/zap"
 )
 
+func Any(key string, value interface{}) zap.Field {
+	return zap.Any(key, value)
+}
+
+func Err(err error) zap.Field {
+	return zap.Error(err)
+}
+
 func log(level Level, template string, args ...interface{}) {
 	zapLevel := Level2ZapLevle(level)
 	if template == "" {
