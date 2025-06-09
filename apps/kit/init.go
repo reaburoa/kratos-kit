@@ -10,12 +10,13 @@ func Init(serviceName string, ops ...KitOptions) error {
 	kitOps := &kitOptions{
 		serviceName: serviceName,
 	}
-	log.InitLogger()
-
 	env.SetServiceName(kitOps.serviceName)
-	//	metrics.InitMetrics(kitOps.serviceName)
 
 	config.InitConfig()
+
+	log.InitLogger()
+
+	//	metrics.InitMetrics(kitOps.serviceName)
 
 	for _, o := range ops {
 		o(kitOps)

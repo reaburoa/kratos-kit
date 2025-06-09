@@ -3,6 +3,7 @@ package log
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/welltop-cn/common/cloud/config"
 	"github.com/welltop-cn/common/protos"
@@ -24,9 +25,10 @@ func initLog(conf *protos.Logger, options ...zap.Option) *zap.Logger {
 	atomicLevel := zap.NewAtomicLevel()
 	atomicLevel.SetLevel(Level2ZapLevle(Level(conf.Level)))
 
+	lumberJackLogger := getLumberJackLogger(conf)
 	writerSyncer := []zapcore.WriteSyncer{
-		zapcore.AddSync(os.Stdout),                 // 输出到stdout
-		zapcore.AddSync(getLumberJackLogger(conf)), // 输出到文件
+		zapcore.AddSync(os.Stdout),        // 输出到stdout
+		zapcore.AddSync(lumberJackLogger), // 输出到文件
 	}
 	multiWriter := zapcore.NewMultiWriteSyncer(writerSyncer...)
 	core := zapcore.NewCore(
@@ -74,9 +76,9 @@ func getLumberJackLogger(logConf *protos.Logger) *lumberjack.Logger {
 	jackLogger := &lumberjack.Logger{
 		LocalTime: true,
 	}
-	logFilename := "logs/app.log"
+	logFilename := fmt.Sprintf("%s.%s", "logs/app.log", time.Now().Format("20060102"))
 	if logConf.Path != "" && logConf.Filename != "" {
-		logFilename = fmt.Sprintf("%s/%s", logConf.Path, logConf.Filename)
+		logFilename = fmt.Sprintf("%s/%s.%s", logConf.Path, logConf.Filename, time.Now().Format("20060102"))
 	}
 	jackLogger.Filename = logFilename
 

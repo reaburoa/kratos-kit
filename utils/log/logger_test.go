@@ -18,4 +18,5 @@ func Test_logger(t *testing.T) {
 	//Infow("abc", "this is a debug log", "1222")
 
 	CtxInfof(ctx, "abc %s", "this is a debug log")
+
 }
