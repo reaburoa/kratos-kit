@@ -86,8 +86,11 @@ message OssConfig {
 }
 
 message Logger {
-  string path = 1;
-  string level = 2;
-  string expire = 3;
-  string filename = 4;
+  string path = 1; // 日志文件存储位置
+  string level = 2; // 日志级别
+  string filename = 3; // 日志文件
+  int32 max_size = 4; // 单个日志文件最大大小,单位MB,不设置为不限大小
+  int32 max_age = 5; // 日志保留时常,单位天,不设置则永久保存
+  bool is_compress = 6; // 保持文件是否进行压缩存储,压缩后,使用 gunzip 进行解压
+  int32 backup_nums = 7; // 最大保持日志文件数,不设置,则不限制
 }

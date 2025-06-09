@@ -14,5 +14,6 @@ func Test_logger(t *testing.T) {
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, "trace_id", "ttttttttt")
 
-	CtxErrorf(ctx, "debug format %s", "this is a debug log")
+	CtxDebug(ctx, "debug format %s", "this is a debug log")
+
 }
