@@ -7,19 +7,23 @@ import (
 type Level string
 
 const (
-	Debug Level = "debug"
-	Info  Level = "info"
-	WARN  Level = "warn"
-	Error Level = "error"
-	Fatal Level = "fatal"
+	DebugLevel  Level = "debug"
+	InfoLevel   Level = "info"
+	WarnLevel   Level = "warn"
+	ErrorLevel  Level = "error"
+	DPanicLevel Level = "dpanic"
+	PanicLevel  Level = "panic"
+	FatalLevel  Level = "fatal"
 )
 
 var levelZapMap = map[Level]zapcore.Level{
-	Debug: zapcore.DebugLevel,
-	Info:  zapcore.InfoLevel,
-	WARN:  zapcore.WarnLevel,
-	Error: zapcore.ErrorLevel,
-	Fatal: zapcore.FatalLevel,
+	DebugLevel:  zapcore.DebugLevel,
+	InfoLevel:   zapcore.InfoLevel,
+	WarnLevel:   zapcore.WarnLevel,
+	ErrorLevel:  zapcore.ErrorLevel,
+	DPanicLevel: zapcore.DPanicLevel,
+	PanicLevel:  zapcore.PanicLevel,
+	FatalLevel:  zapcore.FatalLevel,
 }
 
 func Level2ZapLevle(l Level) zapcore.Level {

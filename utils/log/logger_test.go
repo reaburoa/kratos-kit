@@ -13,7 +13,9 @@ func Test_logger(t *testing.T) {
 
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, "trace_id", "ttttttttt")
+	ctx = context.WithValue(ctx, AttrRequestId, "request_id333")
 
-	CtxDebug(ctx, "debug format %s", "this is a debug log")
+	//Infow("abc", "this is a debug log", "1222")
 
+	CtxInfof(ctx, "abc %s", "this is a debug log")
 }

@@ -51,7 +51,9 @@ func getLoggerConf() *protos.Logger {
 	var logC protos.Logger
 	err := config.Get("logger").Scan(&logC)
 	if err != nil {
-		panic("get logger config failed" + err.Error())
+		return &protos.Logger{
+			Level: "info",
+		}
 	}
 	return &logC
 }

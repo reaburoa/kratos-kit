@@ -9,3 +9,9 @@ const (
 )
 
 var emptyField zap.Field
+
+type AttrKey string
+
+const (
+	AttrRequestId AttrKey = "request_id"
+)
