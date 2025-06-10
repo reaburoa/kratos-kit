@@ -1,7 +1,6 @@
 package server
 
 import (
-	"context"
 	"net/http"
 	"net/http/pprof"
 	"os"
@@ -24,7 +23,7 @@ func RunMetrics() error {
 			_, _ = w.Write([]byte("pong"))
 		}))
 		if err := http.ListenAndServe(metricsHTTPPort, metricsSrv); err != nil {
-			log.CtxFatalf(context.Background(), "start monitor http server failed %+v", err)
+			log.Fatalf("start monitor http server failed %+v", err)
 		}
 	}()
 
@@ -44,7 +43,7 @@ func RunPprof() error {
 		pprofSrv.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
 		pprofSrv.HandleFunc("/debug/pprof/trace", pprof.Trace)
 		if err := http.ListenAndServe(pprofHTTPPort, pprofSrv); err != nil {
-			log.CtxFatalf(context.Background(), "start pprof http server failed %+v", err)
+			log.Fatalf("start pprof http server failed %+v", err)
 		}
 	}()
 	fgprofHTTPPort := os.Getenv("FGPROF_HTTP_PORT")
@@ -55,7 +54,7 @@ func RunPprof() error {
 		fgprofSrv := http.NewServeMux()
 		fgprofSrv.Handle("/debug/fgprof", fgprof.Handler())
 		if err := http.ListenAndServe(fgprofHTTPPort, fgprofSrv); err != nil {
-			log.CtxFatalf(context.Background(), "start fgprof http server failed %+v", err)
+			log.Fatalf("start fgprof http server failed %+v", err)
 		}
 	}()
 
